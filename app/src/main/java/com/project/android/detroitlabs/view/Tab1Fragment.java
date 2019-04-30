@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.project.android.detroitlabs.Constants;
 import com.project.android.detroitlabs.Model.WeatherResponse;
 import com.project.android.detroitlabs.R;
+import com.project.android.detroitlabs.Utils.DateFormatUtil;
 import com.project.android.detroitlabs.Utils.NetworkUtils;
 import com.project.android.detroitlabs.Utils.WeatherService;
 import com.squareup.picasso.Picasso;
@@ -74,7 +75,7 @@ public class Tab1Fragment extends Fragment {
     private void getWeatherInformation() {
         compositeDisposable.add(mService.getCurrentWeatherData(String.valueOf(Constants.current_location.getLatitude()),
                 String.valueOf(Constants.current_location.getLongitude()),
-                Constants.APP_ID,"metric")
+                Constants.APP_ID,"imperial")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<WeatherResponse>() {
@@ -89,16 +90,16 @@ public class Tab1Fragment extends Fragment {
                         .append(weatherResponse.getName()).toString());
                         txt_temperature.setText(new StringBuilder
                                 (String.valueOf(weatherResponse.getMain().temp))
-                                .append("°C").toString());
+                                .append("°F").toString());
                         txt_wind.setText(new StringBuilder("Speed ")
                                 .append(String.valueOf(weatherResponse.wind.speed))
                                 .append("  Deg ")
                                 .append(String.valueOf(weatherResponse.wind.deg)).toString());
-                        txt_date_time.setText(String.valueOf(weatherResponse.getDt()));
+                        txt_date_time.setText(DateFormatUtil.convertUnixToDate(weatherResponse.getDt()));
                         txt_pressure.setText(new StringBuilder(String.valueOf(weatherResponse.getMain().pressure)).append(" hpa").toString());
                         txt_humidity.setText(new StringBuilder(String.valueOf(weatherResponse.getMain().humidity)).append("%").toString());
-                        txt_sunrise.setText(String.valueOf(weatherResponse.getSys().sunrise));
-                        txt_sunset.setText(String.valueOf(weatherResponse.getSys().sunset));
+                        txt_sunrise.setText(DateFormatUtil.convertUnixToDate(weatherResponse.getSys().sunrise));
+                        txt_sunset.setText(DateFormatUtil.convertUnixToDate(weatherResponse.getSys().sunset));
 
                         weather_panel.setVisibility(View.VISIBLE);
                         loading.setVisibility(View.GONE);

@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter=new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(Tab1Fragment.getInstance(),"Today");
+        adapter.addFragment(Tab2Fragment.getInstance(),"Forecast");
         viewPager.setAdapter(adapter);
     }
 
